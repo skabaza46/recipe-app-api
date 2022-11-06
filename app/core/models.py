@@ -4,10 +4,11 @@ Database models
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
-AbstractBaseUser,
-BaseUserManager,
-PermissionsMixin
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
 )
+
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -34,8 +35,10 @@ class UserManager(BaseUserManager):
 
         return user
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
+
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -46,12 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
 
+
 class Recipe(models.Model):
     """Recipe object."""
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)

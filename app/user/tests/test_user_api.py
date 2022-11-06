@@ -8,20 +8,21 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
-CREATE_USER_URL = reverse('user:create')
+CREATE_USER_URL = reverse("user:create")
 TOKEN_URL = reverse("user:token")
-ME_URL = reverse('user:me')
+ME_URL = reverse("user:me")
+
 
 def create_user(**params):
     """Create and return a new user."""
     return get_user_model().objects.create_user(**params)
+
 
 class PublicUserAPITests(TestCase):
     """Test the public features of the user API."""
 
     def setUp(self):
         self.client = APIClient()
-
 
     def test_create_user_success(self):
         """Test creating a user is successful."""
@@ -63,9 +64,7 @@ class PublicUserAPITests(TestCase):
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-        user_exists = get_user_model().objects.filter(
-            email=payload['email']
-        ).exists()
+        user_exists = get_user_model().objects.filter(email=payload["email"]).exists()
 
         self.assertFalse(user_exists)
 
@@ -79,10 +78,7 @@ class PublicUserAPITests(TestCase):
 
         create_user(**user_details)
 
-        payload = {
-            "email": user_details["email"],
-            "password": user_details["password"]
-        }
+        payload = {"email": user_details["email"], "password": user_details["password"]}
 
         res = self.client.post(TOKEN_URL, payload)
 
@@ -93,7 +89,7 @@ class PublicUserAPITests(TestCase):
         """Test returns error if credentials is invalid."""
         create_user(email="test@example.com", password="goodpass")
 
-        payload = {"email": "test@example.com","password":"badpass"}
+        payload = {"email": "test@example.com", "password": "badpass"}
 
         res = self.client.post(TOKEN_URL, payload)
 
@@ -102,8 +98,8 @@ class PublicUserAPITests(TestCase):
 
     def test_create_token_blank_password(self):
         """Test posting a blank password returns an error."""
-        payload = {"email": "test@example.com","password":""}
-        res =self.client.post(TOKEN_URL, payload)
+        payload = {"email": "test@example.com", "password": ""}
+        res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn("token", res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -113,6 +109,7 @@ class PublicUserAPITests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserApiTests(TestCase):
     """Test API requests that require authentication."""
@@ -131,10 +128,13 @@ class PrivateUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data,{
-            "name": self.user.name,
-            "email": self.user.email,
-        })
+        self.assertEqual(
+            res.data,
+            {
+                "name": self.user.name,
+                "email": self.user.email,
+            },
+        )
 
     def test_post_me_not_allowed(self):
         """Test POST is not allowed for the me endpoint."""

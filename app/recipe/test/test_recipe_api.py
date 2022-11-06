@@ -12,27 +12,25 @@ from rest_framework.test import APIClient
 
 from core.models import Recipe
 
-from recipe.serializers import (
-    RecipeSerializer,
-    RecipeDetailSerializer
-)
+from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
 
 
 RECIPES_URL = reverse("recipe:recipe-list")
+
 
 def detail_url(recipe_id):
     """Create and return a recipe detail URL."""
     return reverse("recipe:recipe-detail", args=[recipe_id])
 
 
-def create_recipe(user,**params):
+def create_recipe(user, **params):
     """Create and return a sample recipe."""
     defaults = {
         "title": "Sample recipe title",
         "time_minutes": 22,
         "price": Decimal("5.25"),
         "description": "Sample description",
-        "link": "http://example.com/recipe.pdf"
+        "link": "http://example.com/recipe.pdf",
     }
     defaults.update(params)
 
@@ -58,14 +56,14 @@ class PublicRecipeAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
 class PrivateRecipeAPITests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email="user@example.com",password="test1234")
+        self.user = create_user(email="user@example.com", password="test1234")
         self.client.force_authenticate(self.user)
-
 
     def test_retrieve_recipes(self):
         """Test retrieving a list of recipes."""
@@ -151,10 +149,10 @@ class PrivateRecipeAPITests(TestCase):
     def test_full_update(self):
         """Test full update of recipe."""
         recipe = create_recipe(
-        user=self.user,
-        title="Sample recipe title",
-        link="https://example.com/recipe.pdf",
-        description="Sampel recipe description"
+            user=self.user,
+            title="Sample recipe title",
+            link="https://example.com/recipe.pdf",
+            description="Sampel recipe description",
         )
 
         payload = {
@@ -162,7 +160,7 @@ class PrivateRecipeAPITests(TestCase):
             "link": "https://example.com/new-recipe.pdf",
             "description": "New recipe description",
             "time_minutes": 10,
-            "price": Decimal("2.50")
+            "price": Decimal("2.50"),
         }
 
         url = detail_url(recipe.id)
@@ -199,7 +197,6 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
 
-
     def test_recipe_other_users_recipe_error(self):
         """Test trying to delete another users recipe gives error."""
         new_user = create_user(email="user2@example.com", password="test1234")
@@ -210,5 +207,3 @@ class PrivateRecipeAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         self.assertTrue(Recipe.objects.filter(id=recipe.id).exists())
-
-        
