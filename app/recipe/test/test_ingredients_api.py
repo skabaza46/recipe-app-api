@@ -31,7 +31,7 @@ class PublicIngredientsApiTests(TestCase):
 
 class PrivateIngredientsApiTests(TestCase):
     """Test authenticated API requests."""
-    def setup(self):
+    def setUp(self):
         self.user = create_user()
         self.client = APIClient()
         self.client.force_authenticate(self.user)
@@ -53,7 +53,7 @@ class PrivateIngredientsApiTests(TestCase):
         """Test list of ingredients is limited to authenticated users."""
         user2 = create_user(email="user2@example.com")
         Ingredient.objects.create(user=user2, name="Salt")
-        ingredients = Ingredient.objects.create(user=self.user, name="Pepper")
+        ingredient = Ingredient.objects.create(user=self.user, name="Pepper")
 
         res = self.client.get(INGREDIENT_URL)
 
