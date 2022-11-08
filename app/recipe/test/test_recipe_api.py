@@ -431,7 +431,7 @@ class PrivateRecipeAPITests(TestCase):
 
         self.assertIn(s1.data, res.data)
         self.assertIn(s2.data, res.data)
-        self.assertNotIn(s3.data, rest.data)
+        self.assertNotIn(s3.data, res.data)
 
     def test_filter_by_ingredients(self):
         """Test filting recipe by ingredients."""
