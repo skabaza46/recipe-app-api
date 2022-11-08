@@ -34,7 +34,8 @@ services:
     depends_on:
       - app
     ports:
-      - 80:8000
+      # - 80:8000 # for production mode
+      - 8000:8000 # for development mode
     volumes:
       - static-data:/vol/static
 
