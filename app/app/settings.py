@@ -145,3 +145,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ),
 }
+
+# Allows the image to be uploaded from the browser interface
+SPECTACULAR_SETTINGS = {
+    "COMPONENT_SPLIT_REQUEST": True
+}

@@ -430,7 +430,7 @@ class ImageUploadTests(TestCase):
         url = image_upload_url(self.recipe.id)
 
         # Creating temporary file to be used to test uploading to endpoint
-        with tempfile.NamedTemporaryFile(suffic=".jpg") as image_file:
+        with tempfile.NamedTemporaryFile(suffix=".jpg") as image_file:
             # Black square image
             img = Image.new("RGB", (10, 10))
 
