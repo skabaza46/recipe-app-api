@@ -19,7 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import (Recipe, Tag, Ingredient)
 from recipe import serializers
 
-
+# Updating the API documentation for Ingredients and Tag filtering
 @extend_schema_view(
     list=extend_schema(
         parameters=[
