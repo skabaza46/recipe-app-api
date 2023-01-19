@@ -10,7 +10,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import (Tag, Recipe)
+from core.models import Tag, Recipe
 from recipe.serializers import TagSerializer
 
 TAGS_URL = reverse("recipe:tag-list")
@@ -19,6 +19,7 @@ TAGS_URL = reverse("recipe:tag-list")
 def detail_url(tag_id):
     """Create and return a tag detail url."""
     return reverse("recipe:tag-detail", args=[tag_id])
+
 
 def create_user(email="user@example.com", password="testpass1234"):
     """Create and return a user."""
@@ -79,7 +80,7 @@ class PrivateTagsApiTests(TestCase):
         payload = {"name": "Dessert"}
 
         url = detail_url(tag.id)
-        res =self.client.patch(url, payload)
+        res = self.client.patch(url, payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         tag.refresh_from_db()
@@ -116,6 +117,7 @@ class PrivateTagsApiTests(TestCase):
         s2 = TagSerializer(tag2)
         self.assertIn(s1.data, res.data)
         self.assertNotIn(s2.data, res.data)
+
     def test_filter_by_tags_unique(self):
         """TEst filtering tags return a unique list."""
         tag = Tag.objects.create(user=self.user, name="Breakfast")

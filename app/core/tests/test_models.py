@@ -88,10 +88,7 @@ class ModelTests(TestCase):
         """Test creating an ingredient is successful."""
         user = create_user()
 
-        ingredient = models.Ingredient.objects.create(
-            user=user,
-            name="Ingredient"
-        )
+        ingredient = models.Ingredient.objects.create(user=user, name="Ingredient")
         self.assertEqual(str(ingredient), ingredient.name)
 
     @patch("core.models.uuid.uuid4")
@@ -102,4 +99,3 @@ class ModelTests(TestCase):
         file_path = models.recipe_image_file_path(None, "example.jpg")
 
         self.assertEqual(file_path, f"uploads/recipe/{uuid}.jpg")
-    
