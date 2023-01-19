@@ -23,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "changeme")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get("DEBUG", 0)))
+DEBUG = os.environ.get("DEBUG", False)
+
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS.extend(
@@ -150,9 +151,8 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
 
 # Allows the image to be uploaded from the browser interface
-SPECTACULAR_SETTINGS = {
-    "COMPONENT_SPLIT_REQUEST": True
-}
+SPECTACULAR_SETTINGS = {"COMPONENT_SPLIT_REQUEST": True}
