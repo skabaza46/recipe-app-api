@@ -8,9 +8,6 @@ COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./scripts /scripts
 
-COPY ./app /app
-WORKDIR /app
-
 EXPOSE 8000
 
 ARG DEV=true
@@ -44,5 +41,8 @@ RUN python -m venv /py && \
 ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
+
+COPY ./app /app
+WORKDIR /app
 
 CMD ["run.sh"]
