@@ -22,7 +22,9 @@ services:
       - DB_NAME=devdb
       - DB_USER=devuser
       - DB_PASS=changeme
-      - DBUG=1
+      - SECRET_KEY=2d441fd2-791a-49ce-bad7-9e49b493317a
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - DEBUG=true
 
     depends_on:
       - db
